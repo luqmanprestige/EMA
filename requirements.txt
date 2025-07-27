@@ -1,0 +1,9 @@
+aiohttp
+python-binance
+pandas
+numpy
+ta
+gspread
+oauth2client
+python-dotenv
+flask
