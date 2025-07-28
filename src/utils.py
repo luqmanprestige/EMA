@@ -1,10 +1,17 @@
 import aiohttp
 
-BINANCE_API = 'https://api.binance.com/api/v3/ticker/price'
-
 async def get_all_usdt_pairs():
+    url = "https://api.binance.com/api/v3/exchangeInfo"
     async with aiohttp.ClientSession() as session:
-        async with session.get(BINANCE_API) as resp:
+        async with session.get(url) as resp:
             data = await resp.json()
-            symbols = [item['symbol'] for item in data if item['symbol'].endswith('USDT')]
+            symbols = [
+                s['symbol']
+                for s in data['symbols']
+                if (
+                    s['quoteAsset'] == 'USDT' and
+                    s['status'] == 'TRADING' and
+                    s['isSpotTradingAllowed'] == True
+                )
+            ]
             return symbols
